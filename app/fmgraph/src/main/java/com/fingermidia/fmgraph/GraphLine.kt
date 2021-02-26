@@ -4,11 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.ImageView
 import com.fingermidia.fmgraph.R
 
 
-class GraphLine : androidx.appcompat.widget.AppCompatImageView {
+class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchListener {
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
@@ -18,16 +20,28 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView {
     ) {
     }
 
+    override fun onTouch(p: View?, p1: MotionEvent?): Boolean {
+        p1?.let {
+            clickX = it.x.toDouble()
+            clickY = it.y.toDouble()
+            createGraph()
+            return true
+        }
+
+        return false
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         createGraph()
+        setOnTouchListener(this)
     }
 
     var v = ArrayList<EntryPoint>()
     var clickX = 0.0
     var clickY = 0.0
-    var colorGraphLine = Color.GRAY
-    var colorLine = Color.BLUE
+    var colorGraphLine = Color.BLUE
+    var colorLine = Color.GRAY
     var backgroundGraphColor = Color.WHITE
 
     fun changeData(
