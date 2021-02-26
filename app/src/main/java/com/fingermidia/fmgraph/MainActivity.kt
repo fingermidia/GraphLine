@@ -5,7 +5,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), View.OnTouchListener {
+class MainActivity : AppCompatActivity() {
     var values = ArrayList<EntryPoint>()
     lateinit var chart: GraphLine
 
@@ -25,17 +25,8 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
 
         chart = findViewById(R.id.chart)
 
-        chart.changeData(values, 0.0, 0.0)
-        chart.setOnTouchListener(this)
+        chart.changeData(values)
 
     }
 
-    override fun onTouch(p: View?, p1: MotionEvent?): Boolean {
-//        p1?.let {
-//            GraphLine.createGraph(p as ImageView, values, it.x.toDouble(), it.y.toDouble(), this)
-//            return true
-//        }
-
-        return false
-    }
 }

@@ -20,6 +20,12 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
     ) {
     }
 
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        createGraph()
+        setOnTouchListener(this)
+    }
+
     override fun onTouch(p: View?, p1: MotionEvent?): Boolean {
         p1?.let {
             clickX = it.x.toDouble()
@@ -31,12 +37,6 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
         return false
     }
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        createGraph()
-        setOnTouchListener(this)
-    }
-
     var v = ArrayList<EntryPoint>()
     var clickX = 0.0
     var clickY = 0.0
@@ -44,14 +44,8 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
     var colorLine = Color.GRAY
     var backgroundGraphColor = Color.WHITE
 
-    fun changeData(
-        v: ArrayList<EntryPoint>,
-        clickX: Double,
-        clickY: Double
-    ) {
+    fun changeData(v: ArrayList<EntryPoint>) {
         this.v = v
-        this.clickX = clickX
-        this.clickY = clickY
         createGraph()
     }
 
@@ -218,7 +212,7 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
         }
     }
 
-    fun showText(x: Float, y: Float, clickX: Float, clickY: Float): Boolean {
+    private fun showText(x: Float, y: Float, clickX: Float, clickY: Float): Boolean {
         var range = 80
         var clickXMin = clickX - range
         var clickXMax = clickX + range
@@ -230,7 +224,7 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
         return ret
     }
 
-    fun drawText(canvas: Canvas, x: Float, y: Float, text: String, color: Int) {
+    private fun drawText(canvas: Canvas, x: Float, y: Float, text: String, color: Int) {
         val paint = Paint()
         paint.color = color
         paint.textSize = 30f;
@@ -241,14 +235,14 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
         canvas.drawText(text, x - (bounds.width() / 2), y - 25f, paint);
     }
 
-    fun drawLegend(canvas: Canvas, x: Float, y: Float, text: String, color: Int) {
+    private fun drawLegend(canvas: Canvas, x: Float, y: Float, text: String, color: Int) {
         val paint = Paint()
         paint.color = color
         paint.textSize = 30f;
         canvas.drawText(text, x - 15, y, paint);
     }
 
-    fun drawCircle(canvas: Canvas, x: Float, y: Float, color: Int) {
+    private fun drawCircle(canvas: Canvas, x: Float, y: Float, color: Int) {
         val paint = Paint()
         paint.style = Paint.Style.STROKE
         paint.color = color
@@ -260,7 +254,7 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
         canvas.drawCircle(x, y, 5f, paint2)
     }
 
-    fun calcPosition(h: Double, max: Double, v: Double): Double {
+    private fun calcPosition(h: Double, max: Double, v: Double): Double {
         var ret = h - (v * h / max)
         if (ret > h) {
             ret = h;
@@ -268,7 +262,7 @@ class GraphLine : androidx.appcompat.widget.AppCompatImageView, View.OnTouchList
         return ret;
     }
 
-    fun createLine(
+    private fun createLine(
         canvas: Canvas,
         x1: Float,
         y1: Float,
